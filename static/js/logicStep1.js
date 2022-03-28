@@ -27,8 +27,8 @@ let baseMaps = {
 
 // Create the map object with center, zoom level and default layer.
 let map = L.map('mapid', {
-    center: [43.7, -79.3],
-    zoom: 11,
+    center: [39.5, -98.5],
+    zoom: 3,
     layers: [satelliteStreets]
 });
 
@@ -38,7 +38,7 @@ L.control.layers(baseMaps).addTo(map);
 // streets.addTo(map);
 
 // Accessing the Toronto airlines routes GeoJSON URL.
-let torontoHoods = "https://raw.githubusercontent.com/Dreski9000/mapping_earthquakes/main/torontoNeighborhoods.json"
+let earthquakesL7d = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
 
 //  Add a marker to the map for Los Angeles, California.
@@ -108,13 +108,8 @@ let myStyle = {
     fillColor: "#fcd303"
 };
 // Grabbing our GeoJSON data.
-d3.json(torontoHoods).then(function(data) {
+d3.json(earthquakesL7d).then(function(data) {
     console.log(data);
     // Creating a GeoJSON layer with the retrieved data.
-    L.geoJSON(data, {
-    style: myStyle,
-    onEachFeature: function(feature, layer) {
-        layer.bindPopup("<h3> Neighborhood: " + feature.properties.area_name);
-    }
-}).addTo(map);
+    L.geoJSON(data).addTo(map);
 });
