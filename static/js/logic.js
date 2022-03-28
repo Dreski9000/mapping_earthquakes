@@ -1,7 +1,7 @@
 // Add console.log to check if our code is working
 
 // Create the map object with center at the San Francisco airport.
-let map = L.map('mapid').setView([37.6213, -122.3790], 5);
+let map = L.map('mapid').setView([37.5, -122.5], 10);
 
 // We create the tile layer that will be the background of our map.
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -22,18 +22,18 @@ streets.addTo(map);
 // Get data from cities.js
 let cityData = cities;
 
-cities.forEach(function(city) {
-    console.log(city);
-    L.circleMarker(city.location, {
-        radius: city.population / 200000,
-        color: "orange",
-        weight: 4
+// cities.forEach(function(city) {
+//     console.log(city);
+//     L.circleMarker(city.location, {
+//         radius: city.population / 200000,
+//         color: "orange",
+//         weight: 4
 
 
-    })
-    .bindPopup("<h2>" + city.city + ", " + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>")
-    .addTo(map);
-});
+//     })
+//     .bindPopup("<h2>" + city.city + ", " + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>")
+//     .addTo(map);
+// });
 
 // Add a circle to the map
 // L.circleMarker([34.0522, -118.2437], {
@@ -43,14 +43,44 @@ cities.forEach(function(city) {
 // }).addTo(map);
 
 // Coordinates for each point to be used in the polyline.
-let line = [
-    [33.9416, -118.4085],
-    [37.6213, -122.3790],
-    [40.7899, -111.9791],
-    [47.4502, -122.3088]
-  ];
+// let line = [
+//     [33.9416, -118.4085],
+//     [37.6213, -122.3790],
+//     [40.7899, -111.9791],
+//     [47.4502, -122.3088]
+//   ];
 
 // Create a polyline using the line coordinates and make the line red.
-L.polyline(line, {
-    color: "yellow"
-}).addTo(map);
+// L.polyline(line, {
+//     color: "yellow"
+// }).addTo(map);
+
+// Add GeoJSON data.
+let sanFranAirport =
+{"type":"FeatureCollection","features":[{
+    "type":"Feature",
+    "properties":{
+        "id":"3469",
+        "name":"San Francisco International Airport",
+        "city":"San Francisco",
+        "country":"United States",
+        "faa":"SFO",
+        "icao":"KSFO",
+        "alt":"13",
+        "tz-offset":"-8",
+        "dst":"A",
+        "tz":"America/Los_Angeles"},
+        "geometry":{
+            "type":"Point",
+            "coordinates":[-122.375,37.61899948120117]}}
+]};
+
+// Grabbing our GeoJSON data.
+L.geoJSON(sanFranAirport, {
+    // We turn each feature into a marker on the map.
+    onEachFeature: function(feature, layer) {
+      console.log(layer);
+      layer.bindPopup("<h2>" + feature.properties.city + "</h2>");
+    }
+
+  }).addTo(map);
